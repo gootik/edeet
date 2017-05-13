@@ -7,7 +7,7 @@ at the same time.
 
 Demo
 ------
-![DemoGif](https://media.giphy.com/media/xUPGctzLC7S230E30k/giphy.gif)
+![DemoGif](https://media.giphy.com/media/3ohzdTvasuj8E0hT8Y/giphy.gif)
 
 Running
 -----
