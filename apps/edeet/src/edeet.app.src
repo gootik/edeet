@@ -1,0 +1,19 @@
+{application, edeet,
+ [{description, "Edeet Editor"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { edeet_app, []}},
+  {applications,
+   [cowboy,
+    ranch,
+    cowlib,
+    kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, []},
+  {links, []}
+ ]}.
