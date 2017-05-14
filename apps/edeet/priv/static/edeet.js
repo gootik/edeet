@@ -16,7 +16,8 @@ MediumEditor.prototype.setCaretAtEnd = function() {
     }
 };
 
-var server = 'ws://localhost:8099/websocket';
+
+var server = 'ws://' + window.location.host + '/websocket';
 var ws = null;
 var current = '';
 var editor = null;
