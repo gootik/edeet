@@ -22,7 +22,6 @@ init() ->
 
     ets:insert(edeet_documents, {doc1, <<>>}).
 
-
 new() ->
     DocId = generate_doc_id(),
     true = ets:insert(edeet_documents, {DocId, <<>>}),

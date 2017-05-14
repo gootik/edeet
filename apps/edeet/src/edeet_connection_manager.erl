@@ -24,7 +24,8 @@
 ]).
 
 -record(state, {
-    connections = #{}
+    connections = #{},
+    monitors = #{}
 }).
 
 start_link() ->
@@ -42,12 +43,13 @@ init(_) ->
 handle_call(_Request, _From, State) ->
     {noreply, State}.
 
-handle_cast({add_connection, DocId, Connection}, #state{connections = Connections} = State) ->
-    _ = monitor(process, Connection),
+handle_cast({add_connection, DocId, Connection}, #state{connections = Connections, monitors = Monitors} = State) ->
+    MonRef = monitor(process, Connection),
 
     ConList = maps:get(DocId, Connections, []),
 
-    {noreply, State#state{connections = Connections#{DocId => [Connection | ConList]}}};
+    {noreply, State#state{connections = Connections#{DocId => [Connection | ConList]},
+                          monitors    = Monitors#{MonRef => DocId}}};
 
 handle_cast({broadcast, From, DocId, Message}, #state{connections = Connections} = State) ->
     ConList = maps:get(DocId, Connections, []),
@@ -63,15 +65,26 @@ handle_cast({broadcast, From, DocId, Message}, #state{connections = Connections}
     {noreply, State}.
 
 
-%%handle_info({'DOWN', _, process, Connection, _}, #state{connections = Connections} = State) ->
-%%    NewState = State#state{
-%%        connections = lists:delete(Connection, Connections)
-%%    },
-%%
-%%    ConnectionClosedMessage = jsone:encode(#{broadcast => true,
-%%                                             lost => list_to_binary(pid_to_list(Connection))}),
-%%
-%%    handle_cast({broadcast, self(), ConnectionClosedMessage}, NewState);
+handle_info({'DOWN', MonRef, process, Connection, _}, #state{connections = Connections, monitors = Monitors} = State) ->
+
+    case maps:get(MonRef, Monitors, no_document) of
+        no_document ->
+            NewMonitors = maps:remove(MonRef, Monitors),
+            {noreply, State#state{monitors = NewMonitors}};
+
+        DocId ->
+            ConList = maps:get(DocId, Connections, []),
+            NewConList = lists:delete(Connection, ConList),
+
+            NewState = State#state{
+                connections = Connections#{DocId => NewConList}
+            },
+
+            ConnectionClosedMessage = jsone:encode(#{broadcast => true,
+                                                     lost => list_to_binary(pid_to_list(Connection))}),
+
+            handle_cast({broadcast, self(), DocId, ConnectionClosedMessage}, NewState)
+    end;
 
 handle_info(Info, State) ->
     io:format(user, "Connection manager got ~p~n", [Info]),
