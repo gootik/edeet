@@ -22,6 +22,7 @@ body h1 {
 
     width: 100%;
 
+    clear: both;
     outline: none;
 }
 
@@ -46,6 +47,7 @@ body h1 {
     background: #fff;
 
     width: 60%;
+    height: auto;
 
     display: block;
 
@@ -96,3 +98,5 @@ body h1 {
 
     padding: 10px;
 }
+
+.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}

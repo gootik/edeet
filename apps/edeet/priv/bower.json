@@ -1,0 +1,19 @@
+{
+  "name": "Edeet",
+  "homepage": "https://github.com/shezarkhani/edeet",
+  "authors": [
+    "Sasan Hezarkhani <gootik_2003@hotmail.com>"
+  ],
+  "description": "Edeetor, live document editing.",
+  "main": "index.html",
+  "keywords": [
+    "edeet",
+    "sasan",
+    "gootik"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "medium-editor-insert-plugin": "^2.4.1"
+  }
+}

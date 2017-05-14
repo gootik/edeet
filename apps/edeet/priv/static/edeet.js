@@ -134,6 +134,10 @@ $(document).ready(function() {
         },
     });
 
+    $('.editable').mediumInsert({
+        editor: editor
+    });
+
     $('#submit').click(function() {
         if($('#username').val().length) {
             $('#login').fadeOut();

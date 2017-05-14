@@ -22,10 +22,10 @@
     name = <<>>
 }).
 
-%% @doc Promote and let the person stay connected for a minute.
+%% @doc Promote and let the person stay connected for 10 minutes.
 init(Req, _Opts) ->
     {cowboy_websocket, Req, #state{}, #{
-        idle_timeout => 60000
+        idle_timeout => 600000
     }}.
 
 websocket_init(State) ->
@@ -64,10 +64,11 @@ handle_message(#{<<"type">> := <<"init">>, <<"username">> := Username, <<"docume
         no_document ->
             % If we could not find the document, error and close the connection. We
             % don't want spammers to overload the server.
-            JsonMessage = jsone:encode(#{error => no_document}),
-            {stop, {text, JsonMessage}, State#state{name = Username}};
+            {stop, State#state{name = Username}};
 
         {DocId, Text} ->
+
+            lager:info("~p joined document ~p", [Username, DocId]),
 
             notify_join(DocId, Username),
 

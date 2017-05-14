@@ -6,6 +6,7 @@
      {applications, [cowboy,
                      ranch,
                      cowlib,
+                     lager,
                      kernel,
                      stdlib]},
      {env, []},
