@@ -1,5 +1,4 @@
 %%%-------------------------------------------------------------------
-%%% @copyright (C) 2017, Vungle
 %%% @doc Handles connections on the /websocket endpoint and promotes them
 %%%      to a websocket connection. Handles the messaging between the
 %%%      server and the socket on the client side.

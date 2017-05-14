@@ -1,5 +1,4 @@
 %%%-------------------------------------------------------------------
-%%% @copyright (C) 2017, Vungle
 %%% @doc
 %%%
 %%% @end
@@ -18,10 +17,7 @@ init() ->
                                   named_table,
                                   set,
                                   {read_concurrency, true},
-                                  {write_concurrency, true}]),
-
-    ets:insert(edeet_documents, {doc1, <<>>}).
-
+                                  {write_concurrency, true}]).
 new() ->
     DocId = generate_doc_id(),
     true = ets:insert(edeet_documents, {DocId, <<>>}),
