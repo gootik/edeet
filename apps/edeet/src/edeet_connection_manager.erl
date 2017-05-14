@@ -58,12 +58,15 @@ handle_cast({broadcast, From, Message}, #state{connections = Connections} = Stat
     {noreply, State}.
 
 
-handle_info({'DOWN', _, process, Connection, normal}, #state{connections = Connections} = State) ->
+handle_info({'DOWN', _, process, Connection, _}, #state{connections = Connections} = State) ->
     NewState = State#state{
         connections = lists:delete(Connection, Connections)
     },
 
-    {noreply, NewState};
+    ConnectionClosedMessage = jsone:encode(#{broadcast => true,
+                                             lost => list_to_binary(pid_to_list(Connection))}),
+
+    handle_cast({broadcast, self(), ConnectionClosedMessage}, NewState);
 
 handle_info(Info, State) ->
     io:format(user, "Connection manager got ~p~n", [Info]),

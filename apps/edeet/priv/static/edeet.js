@@ -16,9 +16,9 @@ MediumEditor.prototype.setCaretAtEnd = function() {
     }
 };
 
-var server = "ws://localhost:8099/websocket";
+var server = 'ws://localhost:8099/websocket';
 var ws = null;
-var current = "";
+var current = '';
 var editor = null;
 
 function send(obj) {
@@ -47,8 +47,8 @@ function connect() {
 
 function websocket_init(event) {
     send({
-        message: "",
-        type: "init",
+        message: '',
+        type: 'init',
         username: $('#username').val()
     });
 }
@@ -56,20 +56,33 @@ function websocket_init(event) {
 function handle_message(event) {
     var message = JSON.parse(event.data);
 
+    console.log('got ' + JSON.stringify(message));
     if (message.connection) {
         if ($('#people #' + message.name).length !== 0) {
+
+            $('#people #' + message.name)
+                .data('connection-id', message.id)
+                .fadeIn()
+
             return;
         }
 
         $('#people .person')
             .clone()
             .html(message.name)
-            .attr("id", message.name)
-            .appendTo("#people")
+            .attr('id', message.name)
+
+            .appendTo('#people')
+            .data('connection-id', message.id)
             .fadeIn();
+
     }
 
-    if (message.broadcast) {
+    if (message.lost) {
+        $('#people data[connection-id="' + message.lost + '"]').fadeOut()
+    }
+
+    if (message.text) {
 
         current = message.text
 
@@ -88,9 +101,11 @@ function setup_send_timer() {
         if (content != current) {
             send({
                 message: content,
-                type: "edit"
+                type: 'edit'
             });
         }
+
+        current = content;
 
         setup_send_timer();
     }, 1000);
