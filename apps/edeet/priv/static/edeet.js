@@ -39,7 +39,6 @@ function websocket_init(event) {
 function handle_message(event) {
     var message = JSON.parse(event.data);
 
-    console.log('got ' + JSON.stringify(message));
     if (message.connection) {
         if ($('#people #' + message.name).length !== 0) {
 
@@ -58,7 +57,6 @@ function handle_message(event) {
             .appendTo('#people')
             .data('connection-id', message.id)
             .fadeIn();
-
     }
 
     if (message.lost) {
