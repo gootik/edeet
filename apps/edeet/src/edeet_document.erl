@@ -8,8 +8,9 @@
 
 -export([
     init/0,
-    edit_document/1,
-    get_document/0
+    edit_document/2,
+    get_document/1,
+    new/0
 ]).
 
 init() ->
@@ -21,9 +22,25 @@ init() ->
 
     ets:insert(edeet_documents, {doc1, <<>>}).
 
-get_document() ->
-    [{_, Bin}] = ets:lookup(edeet_documents, doc1),
-    Bin.
 
-edit_document(Bin) ->
-    true = ets:insert(edeet_documents, {doc1, Bin}).
+new() ->
+    DocId = generate_doc_id(),
+    true = ets:insert(edeet_documents, {DocId, <<>>}),
+
+    {DocId, <<>>}.
+
+get_document(DocId) ->
+    case ets:lookup(edeet_documents, DocId) of
+        [{DocId, Bin}] ->
+            {DocId, Bin};
+        _ ->
+            no_document
+    end.
+
+edit_document(DocId, Bin) ->
+    true = ets:insert(edeet_documents, {DocId, Bin}).
+
+
+-spec generate_doc_id() -> binary().
+generate_doc_id() ->
+    integer_to_binary(rand:uniform(100)).

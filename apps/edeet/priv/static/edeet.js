@@ -49,7 +49,8 @@ function websocket_init(event) {
     send({
         message: '',
         type: 'init',
-        username: $('#username').val()
+        username: $('#username').val(),
+        document: window.location.hash &&  window.location.hash.substring(1) || null
     });
 }
 
@@ -80,6 +81,11 @@ function handle_message(event) {
 
     if (message.lost) {
         $('#people data[connection-id="' + message.lost + '"]').fadeOut()
+    }
+
+
+    if (message.init) {
+        window.location.hash = message.doc_id;
     }
 
     if (message.text) {
