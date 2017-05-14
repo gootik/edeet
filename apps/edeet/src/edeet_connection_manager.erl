@@ -1,6 +1,8 @@
 %%%-------------------------------------------------------------------
-%%% @doc
-%%%
+%%% @doc Keeps track of who has what document open. This gen server has
+%%%      a map of `#{document_id() -> [pid()]}' and is used to be able
+%%%      to broadcast messages to connections that have the same document
+%%%      open.
 %%% @end
 %%%-------------------------------------------------------------------
 -module(edeet_connection_manager).
@@ -65,7 +67,6 @@ handle_cast({broadcast, From, DocId, Message}, #state{connections = Connections}
 
 
 handle_info({'DOWN', MonRef, process, Connection, _}, #state{connections = Connections, monitors = Monitors} = State) ->
-
     case maps:get(MonRef, Monitors, no_document) of
         no_document ->
             NewMonitors = maps:remove(MonRef, Monitors),

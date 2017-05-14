@@ -13,7 +13,7 @@ start(_StartType, _StartArgs) ->
     {ok, Port} = application:get_env(edeet, port),
 
     Dispatch = cowboy_router:compile([{'_', [{"/", cowboy_static, {priv_file, edeet, "index.html"}},
-                                             {"/api", edeet_api_handler, []},
+                                             {"/api/doc/[:action]", edeet_api_handler, []},
                                              {"/websocket", edeet_ws_handler, []},
                                              {"/static/[...]", cowboy_static, {priv_dir, edeet, "static"}},
                                              {"/bower_components/[...]", cowboy_static, {priv_dir, edeet, "bower_components"}}

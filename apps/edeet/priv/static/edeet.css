@@ -56,23 +56,6 @@ body h1 {
     box-shadow: 0px 0px 3px 0px rgba(158,158,158,1);
 }
 
-#new_doc_button {
-    font-family: 'Lora', serif;
-    font-weight: bold;
-    font-size: 14pt;
-
-    width: 60%;
-    margin: 0 auto;
-    display: table-cell;
-
-    height: 40px;
-    background: #64C251;
-    color: #fff;
-
-    text-align: center;
-    vertical-align: middle;
-}
-
 #people {
     position: absolute;
     right: 50px;
@@ -105,6 +88,7 @@ body h1 {
     text-align: center;
     padding-top: 150px;
 }
+
 #login input {
     font-family: 'Lora', serif;
     font-size: 30pt;
@@ -113,7 +97,6 @@ body h1 {
 
     padding: 10px;
 }
-
 
 #documents {
     z-index: 5;
@@ -151,6 +134,3 @@ body h1 {
 #documents #new_document i {
     font-size: 40pt;
 }
-
-
-.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}

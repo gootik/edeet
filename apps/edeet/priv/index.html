@@ -1,23 +1,23 @@
 <html>
 <head>
     <title>Edeetor!</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
 
-    <script src="/static/me-markdown.standalone.min.js"></script>
-    <script src="/static/edeet.js"></script>
-
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.0/css/themes/beagle.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
 
-    <!-- CSS -->
     <link rel="stylesheet" href="bower_components/medium-editor/dist/css/medium-editor.min.css">
     <link rel="stylesheet" href="bower_components/medium-editor/dist/css/themes/default.css">
     <link rel="stylesheet" href="bower_components/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css">
 
+    <link rel="stylesheet" href="/static/edeet.css" type="text/css" media="screen" charset="utf-8">
+
     <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/medium-editor/dist/js/medium-editor.js"></script>
     <script src="bower_components/handlebars/handlebars.runtime.min.js"></script>
@@ -27,8 +27,7 @@
     <script src="bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
     <script src="bower_components/medium-editor-insert-plugin/dist/js/medium-editor-insert-plugin.min.js"></script>
 
-    <link rel="stylesheet" href="/static/edeet.css" type="text/css" media="screen" charset="utf-8">
-
+    <script src="/static/edeet.js"></script>
 </head>
 
 <div id="header">
@@ -42,10 +41,7 @@
 </div>
 
 <div id="documents">
-    <div class="document">Document name</div>
-    <div class="document">Another document</div>
-    <div class="document">Project propsal</div>
-    <div class="document">And blah blah</div>
+    <div class="document" style="display: none">Document name</div>
 
     <div class="document" id="new_document">
         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -53,9 +49,7 @@
 </div>
 
 <div id="people">
-    <div class="person">
-        Sasan
-    </div>
+    <div class="person"></div>
 </div>
 
 
