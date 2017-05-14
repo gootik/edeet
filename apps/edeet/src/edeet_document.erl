@@ -46,5 +46,5 @@ edit_document(DocId, Bin) ->
 
 -spec generate_doc_id(binary()) -> binary().
 generate_doc_id(DocName) ->
-    Random = integer_to_binary(rand:uniform(100)),
+    Random = integer_to_binary(rand:uniform(9000)),
     <<DocName/binary, "_", Random/binary>>.
