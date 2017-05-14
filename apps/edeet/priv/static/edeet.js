@@ -32,7 +32,8 @@ function websocket_init(event) {
         message: '',
         type: 'init',
         username: $('#username').val(),
-        document: window.location.hash &&  window.location.hash.substring(1) || null
+        doc_id: window.location.hash && window.location.hash.substring(1) || null,
+        doc_name: $('#new_document').html()
     });
 }
 
@@ -69,7 +70,6 @@ function handle_message(event) {
     }
 
     if (message.text) {
-
         current = message.text
 
         editor.setContent(message.text, 0);
@@ -130,7 +130,6 @@ function open_document() {
     connect();
     setup_send_timer();
 }
-
 
 $(document).ready(function() {
     MediumEditor.prototype.setCaretAtEnd = function() {
@@ -209,8 +208,8 @@ $(document).ready(function() {
                     $('#documents .document')
                         .first()
                         .clone()
-                        .html(doc)
-                        .attr('doc-id', doc)
+                        .html(doc.name)
+                        .attr('doc-id', doc.doc_id)
                         .prependTo('#documents')
                         .click(open_document)
                         .show()
@@ -221,6 +220,17 @@ $(document).ready(function() {
         }
     });
 
-    $('.document')
-        .click(open_document);
+    $('#new_document')
+        .click(function() {
+            $(this).html('');
+            this.contentEditable = true;
+
+            this.focus();
+        })
+        .on('keydown', function(e) {
+          if (e.which == 13) {
+            open_document();
+            return false;
+          };
+        });
 });

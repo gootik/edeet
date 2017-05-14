@@ -9,7 +9,7 @@
     init/0,
     edit_document/2,
     get_document/1,
-    new/0,
+    new/1,
     get_all/0
 ]).
 
@@ -19,31 +19,32 @@ init() ->
                                   set,
                                   {read_concurrency, true},
                                   {write_concurrency, true}]).
-new() ->
-    DocId = generate_doc_id(),
-    true = ets:insert(edeet_documents, {DocId, <<>>}),
+new(DocName) ->
+    DocId = generate_doc_id(DocName),
+    true = ets:insert(edeet_documents, {DocId, DocName, <<>>}),
 
-    {DocId, <<>>}.
+    {DocId, DocName, <<>>}.
 
 get_all() ->
-    get_keys(ets:first(edeet_documents), []).
-
-get_keys('$end_of_table', Acc) ->
-    Acc;
-get_keys(Key, Acc) ->
-    get_keys(ets:next(edeet_documents, Key), [Key | Acc]).
+    ets:foldl(
+        fun({DocId, DocName, _}, Acc) ->
+            DocMap = #{doc_id => DocId,
+                       name => DocName},
+            [DocMap | Acc]
+        end, [], edeet_documents).
 
 get_document(DocId) ->
     case ets:lookup(edeet_documents, DocId) of
-        [{DocId, Bin}] ->
-            {DocId, Bin};
+        [{DocId, DocName, Bin}] ->
+            {DocId, DocName, Bin};
         _ ->
             no_document
     end.
 
 edit_document(DocId, Bin) ->
-    true = ets:insert(edeet_documents, {DocId, Bin}).
+    ets:update_element(edeet_documents, DocId, {3, Bin}).
 
--spec generate_doc_id() -> binary().
-generate_doc_id() ->
-    integer_to_binary(rand:uniform(100)).
+-spec generate_doc_id(binary()) -> binary().
+generate_doc_id(DocName) ->
+    Random = integer_to_binary(rand:uniform(100)),
+    <<DocName/binary, "_", Random/binary>>.

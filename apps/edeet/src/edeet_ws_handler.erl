@@ -50,14 +50,15 @@ websocket_info({send, Message}, State) ->
 %% @doc As soon as the client connects, it will send a init message to get the
 %%      initial state of the document it is trying to open.
 %% @end
-handle_message(#{<<"type">> := <<"init">>, <<"username">> := Username, <<"document">> := Document}, State) ->
+handle_message(#{<<"type">> := <<"init">>, <<"username">> := Username, <<"doc_id">> := DocId} = Message, State) ->
     % If no document id has been passed, create a new one. Otherwise try and
     % load the document.
-    DocInfo = case Document of
+    DocInfo = case DocId of
         null ->
-            edeet_document:new();
-        Document ->
-            edeet_document:get_document(Document)
+            DocName = maps:get(<<"doc_name">>, Message),
+            edeet_document:new(DocName);
+        _ ->
+            edeet_document:get_document(DocId)
     end,
 
     case DocInfo of
@@ -66,19 +67,25 @@ handle_message(#{<<"type">> := <<"init">>, <<"username">> := Username, <<"docume
             % don't want spammers to overload the server.
             {stop, State#state{name = Username}};
 
-        {DocId, Text} ->
+        {InternalDocId, _, Text} ->
 
-            lager:info("~p joined document ~p", [Username, DocId]),
+            lager:info("~p joined document ~p", [Username, InternalDocId]),
 
-            notify_join(DocId, Username),
+            notify_join(InternalDocId, Username),
 
             % We let the client know what the initial state of the document is.
             JsonMessage = jsone:encode(#{init => true,
                                          broadcast => true,
-                                         doc_id => DocId,
+                                         doc_id => InternalDocId,
                                          text => Text}),
 
-            {reply, {text, JsonMessage}, State#state{name = Username, doc_id = DocId}}
+            {reply, {text, JsonMessage}, State#state{name = Username, doc_id = InternalDocId}};
+
+        UnknownMessage ->
+            lager:error("There was an error on socket init: ~p", [UnknownMessage]),
+            ErrorMessage = jsone:encode(#{error => 0}),
+            {reply, {text, ErrorMessage}, State}
+
     end;
 
 
@@ -96,8 +103,11 @@ handle_message(#{<<"type">> := <<"edit">>, <<"message">> := Text}, #state{doc_id
                                  text => Text}),
     edeet_connection_manager:broadcast(DocId, JsonMessage),
 
-    {ok, State}.
+    {ok, State};
 
+handle_message(Msg, State) ->
+    lager:warning("Websocket got an unknown message: ~p", [Msg]),
+    {ok, State}.
 
 notify_join(DocId, Username) ->
     ConnectionMessage = jsone:encode(#{connection => true,
