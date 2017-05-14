@@ -56,6 +56,23 @@ body h1 {
     box-shadow: 0px 0px 3px 0px rgba(158,158,158,1);
 }
 
+#new_doc_button {
+    font-family: 'Lora', serif;
+    font-weight: bold;
+    font-size: 14pt;
+
+    width: 60%;
+    margin: 0 auto;
+    display: table-cell;
+
+    height: 40px;
+    background: #64C251;
+    color: #fff;
+
+    text-align: center;
+    vertical-align: middle;
+}
+
 #people {
     position: absolute;
     right: 50px;
@@ -76,7 +93,6 @@ body h1 {
     margin-bottom: 20px;
 }
 
-
 #login {
     z-index: 10;
     display: block;
@@ -89,7 +105,6 @@ body h1 {
     text-align: center;
     padding-top: 150px;
 }
-
 #login input {
     font-family: 'Lora', serif;
     font-size: 30pt;
@@ -98,5 +113,44 @@ body h1 {
 
     padding: 10px;
 }
+
+
+#documents {
+    z-index: 5;
+    display: block;
+    top: 100px;
+    left: 15%;
+    right: auto;
+    position: absolute;
+    background: #eee;
+    width: 70%;
+    height: 100%;
+    text-align: center;
+    padding-top: 150px;
+}
+
+#documents .document {
+    font-family: 'Arial', sans-serif;
+    width: 200px;
+    height: 300px;
+
+    background: #64C251;
+    color: #fff;
+
+    float: left;
+    margin-right: 40px;
+    margin-bottom: 20px;
+    padding-top: 130px;
+}
+
+#documents .document:hover {
+    background: #4f9940;
+    cursor: hand;
+}
+
+#documents #new_document i {
+    font-size: 40pt;
+}
+
 
 .clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}

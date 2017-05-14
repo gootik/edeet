@@ -127,11 +127,38 @@ $(document).ready(function() {
                 'h1',
                 'h2',
                 'h3',
+                'indent',
+                'outdent',
                 'justifyLeft',
                 'justifyCenter',
                 'justifyRight',
             ]
         },
+
+        keyboardCommands: {
+            commands: [{
+                command: 'bold',
+                key: 'B',
+                meta: true,
+                shift: false,
+                alt: false
+            },{
+                command: 'italic',
+                key: 'I',
+                meta: true,
+                shift: false,
+                alt: false
+            },{
+                command: 'underline',
+                key: 'U',
+                meta: true,
+                shift: false,
+                alt: false
+            }, {
+                command: 'indent',
+                key: 'TAB'
+            }],
+        }
     });
 
     $('.editable').mediumInsert({
@@ -142,9 +169,13 @@ $(document).ready(function() {
         if($('#username').val().length) {
             $('#login').fadeOut();
 
-            connect();
-            setup_send_timer();
         }
+    });
+
+    $('.document').click(function() {
+        $('#documents').fadeOut();
+        connect();
+        setup_send_timer();
     });
 
 });
